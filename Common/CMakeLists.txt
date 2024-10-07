@@ -1,9 +1,7 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.22.1)
 project(Microvolts-Emulator-V2)
 enable_language(C CXX ASM)
 
-#set(CMAKE_C_COMPILER gcc)
-#set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_CXX_STANDARD 20)
 
 include_directories(PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
@@ -15,6 +13,8 @@ add_library(Common SHARED
         Common.cpp
         ${LIBRARY_SOURCES}
 )
+
+target_include_directories(Common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 if(WIN32)
     target_link_libraries(Common wsock32 ws2_32)

@@ -5,7 +5,7 @@
 #include "../../../include/Network/MainSessionManager.h"
 #include "../../../include/ChatCommands/DatabaseCommands/AddPlayer.h"
 #include "Enums/PlayerEnums.h"
-#include "../../../Common/include/Utils/Utils.h"
+#include "../Common/include/Utils/Utils.h"
 
 namespace Main
 {

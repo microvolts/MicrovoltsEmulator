@@ -10,8 +10,8 @@ namespace Auth
 {
 	AuthServer::AuthServer(ioContext& io_context, std::uint16_t port)
 		: m_io_context(io_context)
-		, m_acceptor{ io_context, tcp::endpoint(asio::ip::address::from_string("127.0.0.1"), port) }
-		, m_database("../ExternalLibraries/Database/GameDatabase.db")
+                , m_acceptor{ io_context, tcp::endpoint(tcp::v4(), port) }
+                , m_database("../ExternalLibraries/Database/GameDatabase.db")
 	{
 		Common::Network::Session::addCallback<Auth::Network::Session>(22, [&](const Common::Network::Packet& request,
 			Auth::Network::Session& session) { Auth::Handlers::handleAuthUserInformation(request, session, m_database); });

@@ -403,6 +403,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/.idea
+
 /AuthServer/src/AuthServer.cpp
 /CastServer/src/CastServer.cpp
 /ExternalLibraries/Database/GameDatabase.db

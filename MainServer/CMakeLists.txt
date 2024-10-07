@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.22.1)
 project(Microvolts-Emulator-V2)
 enable_language(C CXX ASM)
 
@@ -16,7 +16,8 @@ add_executable(MainServer ${MAIN_SOURCES})
 target_link_libraries(MainServer
         Common
         SQLiteCpp
-        sqlite3
+        unofficial::sqlite3::sqlite3
+        cryptopp::cryptopp
 )
 
 if(WIN32)
