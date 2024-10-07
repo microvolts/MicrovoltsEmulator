@@ -8,6 +8,9 @@
 #include <fstream>
 #include <filesystem>
 #include <iostream>
+#include <vector>
+#include <optional>
+#include <cstring>
 #include "visit_struct/visit_struct.hpp"
 
 
@@ -15,6 +18,27 @@ namespace Common
 {
 	namespace ConstantDatabase
 	{
+		// The following two useless functions are intentional. Without them visit_struct::for_each doesn't work properly for some obscure reason (probably due to macros)
+		template<typename U, typename T>
+		constexpr bool containsHelper(U inner, T val)
+		{
+			if constexpr (std::same_as<const char*, T>)
+			{
+				return false;
+			}
+			else return inner == val;
+		}
+
+		template<typename T>
+		constexpr bool containsHelper(const char* inner, T val)
+		{
+			if constexpr (std::same_as<const char*, T>)
+			{
+				return std::string{ inner } == std::string{ val };
+			}
+			else return false;
+		}
+
 		template<typename T>
 		class Cdb
 		{
@@ -38,7 +62,7 @@ namespace Common
 				parse(directory, file_name);
 			}
 
-			constexpr void parse(const std::filesystem::path& directory, const std::string& file_name)
+			void parse(const std::filesystem::path& directory, const std::string& file_name)
 			{
 				const std::filesystem::path file_path = directory / file_name;
 				std::ifstream input{ file_path.string(), std::ios::binary };
@@ -73,7 +97,7 @@ namespace Common
 				m_entry_num = 0;
 			}
 
-			constexpr void publish(const std::filesystem::path& directory, const std::string& file_name) const
+			void publish(const std::filesystem::path& directory, const std::string& file_name) const
 			{
 				const std::filesystem::path file_path = directory / file_name;
 				std::ofstream output{ file_path.string(), std::ios::binary };
@@ -99,7 +123,7 @@ namespace Common
 				}
 			}
 
-			template<typename T>
+//			template<typename T>
 			constexpr std::size_t countMatches(const std::string& key, T value) const
 			{
 				std::size_t occurrences = 0;
@@ -108,21 +132,21 @@ namespace Common
 					// Leave this as it is. The "!found" check is intentional, and so are the two "check" functions.
 					// Without those this snippet wouldn't work due to visit_struct macro weirdness
 					visit_struct::for_each(inner_struct, [&](const char* name, const auto& inner_value)
+					{
+						if (std::strcmp(name, key.c_str()) == 0)
 						{
-							if (std::strcmp(name, key.c_str()) == 0)
+							if (contains_helper(inner_value, value))
 							{
-								if (contains_helper(inner_value, value))
-								{
-									++occurrences;
-								}
+								++occurrences;
 							}
+						}
 
-						});
+					});
 				}
 				return occurrences;
 			}
 
-			template<typename T>
+//			template<typename T>
 			constexpr std::size_t contains(const std::string& keys, T value) const
 			{
 				return count_matches(keys, value) > 0;
@@ -149,13 +173,13 @@ namespace Common
 				return new_cdb;
 			}
 
-			template<typename T>
+//			template<typename T>
 			constexpr void replaceValue(const std::string& key, T value, T new_value)
 			{
 				for (auto& [entry, inner_struct] : m_entries)
 				{
 					// typename T on purpose; using auto& here stops working due to visit_struct weirdness!
-					visit_struct::for_each(inner_struct, [&]<typename T>(const char* name, T & inner_value)
+					visit_struct::for_each(inner_struct, [&](const char* name, T & inner_value)
 					{
 						// if constexpr necessary, otherwise visit_struct macro hell doesn't compile this
 						if constexpr (not std::convertible_to<T, const char*>)
@@ -174,7 +198,7 @@ namespace Common
 				for (auto& [entry, inner_struct] : m_entries)
 				{
 					// typename T on purpose; using auto& here stops working due to visit_struct weirdness!
-					visit_struct::for_each(inner_struct, [&]<typename T>(const char* name, T & inner_value)
+					visit_struct::for_each(inner_struct, [&](const char* name, T & inner_value)
 					{
 						// if constexpr necessary, otherwise visit_struct macro hell doesn't compile this
 						if constexpr (std::convertible_to<T, const char*>)
@@ -197,17 +221,17 @@ namespace Common
 					// Leave this as it is. The "!found" check is intentional, and so are the two "check" functions.
 					// Without those this snippet wouldn't work due to visit_struct macro weirdness
 					visit_struct::for_each(inner_struct, [&](const char* name, const auto& inner_value)
+					{
+						if (std::strcmp(name, key.c_str()) == 0 && !found)
 						{
-							if (std::strcmp(name, key.c_str()) == 0 && !found)
+							found = containsHelper(inner_value, value);
+							if (found)
 							{
-								found = containsHelper(inner_value, value);
-								if (found)
-								{
-									ret.emplace(inner_struct);
-								}
+								ret.emplace(inner_struct);
 							}
+						}
 
-						});
+					});
 				}
 				return found ? ret : std::nullopt;
 			}
@@ -246,9 +270,9 @@ namespace Common
 					stream << "[Entry " << entry_num << "]\n";
 
 					visit_struct::for_each(entry, [&](const char* name, const auto& value)
-						{
-							stream << "  " << name << " = " << value << '\n';
-						});
+					{
+						stream << "  " << name << " = " << value << '\n';
+					});
 
 					stream << '\n';
 				}
@@ -256,33 +280,12 @@ namespace Common
 
 
 		private:
-			// The following two useless functions are intentional. Without them visit_struct::for_each doesn't work properly for some obscure reason (probably due to macros)
-			template<typename U, typename T>
-			constexpr bool containsHelper(U inner, T val) const
-			{
-				if constexpr (std::same_as<const char*, T>)
-				{
-					return false;
-				}
-				else return inner == val;
-			}
-
-			template<typename T>
-			constexpr bool containsHelper(const char* inner, T val) const
-			{
-				if constexpr (std::same_as<const char*, T>)
-				{
-					return std::string{ inner } == std::string{ val };
-				}
-				else return false;
-			}
-
 			template<std::size_t I>
 			constexpr void publishTypeHelper(std::ofstream& output) const
 			{
 				if constexpr (I < visit_struct::field_count<T>())
 				{
-					output.write(reinterpret_cast<const char*>(&as_lvalue(sizeof(visit_struct::type_at<I, T>))), 4);
+					output.write(reinterpret_cast<const char*>(&asLvalue(sizeof(visit_struct::type_at<I, T>))), 4);
 					publishTypeHelper<I + 1>(output);
 				}
 			}
@@ -295,12 +298,12 @@ namespace Common
 			constexpr void addKeysFromStruct(const T& t)
 			{
 				visit_struct::for_each(t, [&](const char* name, auto unused)
-					{
-						m_keys.push_back(name);
-					});
+				{
+					m_keys.push_back(name);
+				});
 			}
 
-			template <typename T>
+//			template <typename T>
 			constexpr T& asLvalue(T&& x) const
 			{
 				return x;

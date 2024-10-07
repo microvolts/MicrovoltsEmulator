@@ -28,7 +28,9 @@ void printInitialInformation()
 
 int main()
 {
-    SetConsoleTitleW(L"Microvolts Cast Server");
+	#if defined WIN32
+		SetConsoleTitleW(L"Microvolts Cast Server");
+	#endif
 
     asio::io_context io_context;
 
@@ -39,7 +41,7 @@ int main()
 
     auto workGuard = asio::make_work_guard(io_context);
     const std::uint32_t numThreads = std::thread::hardware_concurrency();
-    std::vector<std::jthread> threads;
+	std::vector<std::thread> threads;
     for (std::uint32_t i = 0; i < numThreads; ++i)
     {
         threads.emplace_back([&io_context] 

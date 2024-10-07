@@ -385,7 +385,7 @@ namespace Main
 				{
 					item.energy += energyAdded;
 					m_accountInfo.battery -= energyAdded;
-					return std::pair{ item.energy, m_accountInfo.battery };
+					return std::pair{ item.energy, (uint64_t)m_accountInfo.battery };
 				}
 			}
 			for (auto& [itemType, item] : m_equippedItemByCharacter.at(m_accountInfo.latestSelectedCharacter))
@@ -394,7 +394,7 @@ namespace Main
 				{
 					item.energy += energyAdded;
 					m_accountInfo.battery -= energyAdded;
-					return std::pair{ item.energy, m_accountInfo.battery };
+					return std::pair{ item.energy, (uint64_t)m_accountInfo.battery };
 				}
 			}
 			return std::nullopt;

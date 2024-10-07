@@ -32,7 +32,6 @@ namespace Main
 			using BlockedPlayer = Main::Structures::BlockedPlayer;
 			using Friend = Main::Structures::Friend;
 			using Mailbox = Main::Structures::Mailbox;
-			using Session = Main::Network::Session;
 
 			AccountInfo m_accountInfo{};
 			std::unordered_map<std::uint64_t, Item> m_itemsByItemNumber{};

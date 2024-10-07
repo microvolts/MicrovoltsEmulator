@@ -408,3 +408,4 @@ FodyWeavers.xsd
 /AuthServer/src/AuthServer.cpp
 /CastServer/src/CastServer.cpp
 /ExternalLibraries/Database/GameDatabase.db
+/build

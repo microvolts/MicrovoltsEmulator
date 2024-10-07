@@ -1,5 +1,4 @@
 
-#include <corecrt.h>
 #include <cstdint>
 #include "../../../include/Structures/Item/MainItem.h"
 #include "../../../include/CdbUtils.h"
