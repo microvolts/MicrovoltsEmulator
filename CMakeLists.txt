@@ -27,6 +27,7 @@ include_directories(PUBLIC ${CMAKE_SOURCE_DIR}/ExternalLibraries/vcpkg/vcpkg_ins
 find_package(SQLiteCpp CONFIG REQUIRED)
 find_package(unofficial-sqlite3 CONFIG REQUIRED)
 find_package(cryptopp CONFIG REQUIRED)
+find_package(directxmath CONFIG REQUIRED)
 
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)

@@ -15,7 +15,11 @@ include_directories(PUBLIC ${CMAKE_SOURCE_DIR}/thirdparty/DirectXMath/Inc)
 file(GLOB_RECURSE CAST_SOURCES  ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 add_executable(CastServer ${CAST_SOURCES})
 
-target_link_libraries(CastServer ${Boost_LIBRARIES} Common)
+target_link_libraries(CastServer
+        ${Boost_LIBRARIES}
+        Common
+        Microsoft::DirectXMath
+)
 #if(WIN32)
 #    target_link_libraries(Common wsock32 ws2_32)
 #endif()
