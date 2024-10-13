@@ -12,6 +12,8 @@
 #include "../../include/ConstantDatabase/Structures/SetItemInfo.h"
 #include "../Enums/GameEnums.h"
 #include <vector>
+#include <cstring>
+#include <stdexcept>
 
 namespace Common
 {
@@ -61,6 +63,18 @@ namespace Common
 			if (entry.si_acce_C != -1) itemTypes.push_back(Common::Enums::ACC_WAIST); // Same for this
 
 			return itemTypes;
+		}
+
+		inline void safe_strcpy(char* dest, const char* src) {
+			size_t dest_size = sizeof(dest);
+			if (!dest || !src) {
+				throw std::invalid_argument("Null pointer passed");
+			}
+			if (std::strlen(src) >= dest_size) {
+				throw std::overflow_error("Destination buffer too small");
+			}
+			std::strncpy(dest, src, dest_size - 1);
+			dest[dest_size - 1] = '\0';  // Ensure null-termination
 		}
 	}
 }

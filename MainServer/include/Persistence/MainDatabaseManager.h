@@ -16,6 +16,7 @@
 #include "../Structures/PlayerLists/BlockedPlayer.h"
 #include "../Structures/Mailbox.h"
 #include "../Structures/AccountInfo/MuteInfo.h"
+#include "Utils/Utils.h"
 
 
 namespace Main
@@ -102,8 +103,8 @@ namespace Main
 
 					if (query.executeStep())
 					{
-						strncpy(playerInfoStructure.nickname, query.getColumn("Nickname").getString().c_str(), sizeof(playerInfoStructure.nickname));
-						strncpy(playerInfoStructure.clanName, query.getColumn("Clanname").getString().c_str(), sizeof(playerInfoStructure.clanName));
+						Common::Utils::safe_strcpy(playerInfoStructure.nickname, query.getColumn("Nickname").getString().c_str());
+						Common::Utils::safe_strcpy(playerInfoStructure.clanName, query.getColumn("Clanname").getString().c_str());
 
 						playerInfoStructure.accountID = playerID;
 						playerInfoStructure.accountKey = static_cast<std::uint32_t>(query.getColumn("AccountKey").getInt());
