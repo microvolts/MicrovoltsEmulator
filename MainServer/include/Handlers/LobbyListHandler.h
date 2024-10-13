@@ -36,7 +36,7 @@ namespace Main
                 singlePlayerList.clanLogoBackId = partialAccountData.clanLogoBackId;
                 singlePlayerList.clanLogoFrontId = partialAccountData.clanLogoFrontId;
                 singlePlayerList.level = partialAccountData.playerLevel;
-                Common::Utils::safe_strcpy(singlePlayerList.name, partialAccountData.nickname);
+                Common::Utils::safe_strcpy(singlePlayerList.name, partialAccountData.nickname, sizeof(singlePlayerList.name));
                 singlePlayerList.uniqueId.server = partialAccountData.uniqueId.server;
                 singlePlayerList.uniqueId.session = partialAccountData.uniqueId.session;
                 singlePlayerList.uniqueId.handlePlayerInvite = partialAccountData.uniqueId.handlePlayerInvite;

@@ -103,8 +103,8 @@ namespace Main
 
 					if (query.executeStep())
 					{
-						Common::Utils::safe_strcpy(playerInfoStructure.nickname, query.getColumn("Nickname").getString().c_str());
-						Common::Utils::safe_strcpy(playerInfoStructure.clanName, query.getColumn("Clanname").getString().c_str());
+						Common::Utils::safe_strcpy(playerInfoStructure.nickname, query.getColumn("Nickname").getString().c_str(), sizeof(playerInfoStructure.nickname));
+						Common::Utils::safe_strcpy(playerInfoStructure.clanName, query.getColumn("Clanname").getString().c_str(), sizeof(playerInfoStructure.clanName));
 
 						playerInfoStructure.accountID = playerID;
 						playerInfoStructure.accountKey = static_cast<std::uint32_t>(query.getColumn("AccountKey").getInt());

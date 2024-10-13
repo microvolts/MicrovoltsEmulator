@@ -65,8 +65,7 @@ namespace Common
 			return itemTypes;
 		}
 
-		inline void safe_strcpy(char* dest, const char* src) {
-			size_t dest_size = sizeof(dest);
+		void safe_strcpy(char* dest, const char* src, size_t dest_size) {
 			if (!dest || !src) {
 				throw std::invalid_argument("Null pointer passed");
 			}

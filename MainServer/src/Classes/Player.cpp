@@ -112,7 +112,7 @@ namespace Main
 
 		void Player::setPlayerName(const char* playerName)
 		{
-			Common::Utils::safe_strcpy(m_accountInfo.nickname, playerName);
+			Common::Utils::safe_strcpy(m_accountInfo.nickname, playerName, sizeof(m_accountInfo.nickname));
 		}
 
 		bool Player::hasEnoughInventorySpace(std::uint16_t totalNewItems) const
