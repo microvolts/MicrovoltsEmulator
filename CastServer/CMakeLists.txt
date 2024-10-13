@@ -17,5 +17,12 @@ target_link_libraries(CastServer
         Microsoft::DirectXMath
 )
 
+# Add GCC-specific flag for MSVC-like bit-field layout (only for GCC/Clang)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(CastServer PRIVATE
+            -mms-bitfields       # Use MSVC style bit-field layout
+    )
+endif()
+
 set_property(TARGET CastServer PROPERTY POSITION_INDEPENDENT_CODE ON)
 set_target_properties(CastServer PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})

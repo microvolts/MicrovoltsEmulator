@@ -21,6 +21,13 @@ target_link_libraries(AuthServer
         cryptopp::cryptopp
 )
 
+# Add GCC-specific flag for MSVC-like bit-field layout (only for GCC/Clang)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(AuthServer PRIVATE
+            -mms-bitfields       # Use MSVC style bit-field layout
+    )
+endif()
+
 if(WIN32)
     target_link_libraries(AuthServer wsock32 ws2_32)
 endif()

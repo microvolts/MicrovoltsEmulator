@@ -16,6 +16,13 @@ add_library(Common SHARED
 
 target_include_directories(Common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+# Add GCC-specific flag for MSVC-like bit-field layout (only for GCC/Clang)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(Common PRIVATE
+            -mms-bitfields       # Use MSVC style bit-field layout
+    )
+endif()
+
 if(WIN32)
     target_link_libraries(Common wsock32 ws2_32)
 endif()
