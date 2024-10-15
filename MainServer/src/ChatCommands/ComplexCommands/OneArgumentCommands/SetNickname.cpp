@@ -26,9 +26,9 @@ namespace Main
 				sendConfirmation(response, session);
 				return;
 			}
-			if (m_value.size() >= 16)
+			if (m_value.size() > 16)
 			{
-				this->m_confirmationMessage += "error: nickname must contain less than 16 characters";
+				this->m_confirmationMessage += "error: nickname must contain 16 or less characters";
 				sendConfirmation(response, session);
 				return;
 			}
