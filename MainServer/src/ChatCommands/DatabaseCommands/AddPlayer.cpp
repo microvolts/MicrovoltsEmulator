@@ -26,7 +26,7 @@ namespace Main
 				sendConfirmation(response, session);
 				return;
 			}
-			if (m_nickname.size() >= 15)
+			if (m_nickname.size() > 16)
 			{
 				this->m_confirmationMessage += "error: max. player nickname size is 16";
 				sendConfirmation(response, session);
