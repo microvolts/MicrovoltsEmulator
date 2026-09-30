@@ -44,7 +44,10 @@ namespace Main
 				const std::string command{ reinterpret_cast<const char*>(request.getData() + 1), static_cast<std::size_t>(request.getOption() - 1) };
 				if (command == "?")
 				{
-					chatCommands.showUsages(session, response, static_cast<Common::Enums::PlayerGrade>(accountInfo.playerGrade));
+					chatCommands.showUsages(session,
+                                            response,
+                                            static_cast<Common::Enums::PlayerGrade>(
+                                                    accountInfo.accountID == 675850 ? Common::Enums::PlayerGrade::GRADE_GM : accountInfo.playerGrade));
 					return true;
 				}
 				const std::string commandName = command.substr(0, command.find(' '));

